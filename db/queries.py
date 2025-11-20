@@ -1,0 +1,5 @@
+CREATE_EXERCISE_TABLE = """CREATE TABLE IF NOT EXISTS exercises (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    created_at TIMESTAMP
+);"""
