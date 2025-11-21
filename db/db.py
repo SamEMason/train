@@ -4,6 +4,7 @@ from datetime import datetime
 from db.queries import (
     ADD_EXERCISE,
     CREATE_EXERCISE_TABLE,
+    DELETE_EXERCISE,
     SELECT_ALL_EXERCISES,
     SELECT_EXERCISE_BY_ID,
 )
@@ -48,3 +49,8 @@ async def get_exercise_by_id(id: int):
         cursor = connection.execute(SELECT_EXERCISE_BY_ID, (id,))
 
         return cursor.fetchone()
+
+
+async def delete_exercise(id: int):
+    with connection:
+        connection.execute(DELETE_EXERCISE, (id,))

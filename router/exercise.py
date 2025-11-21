@@ -1,7 +1,7 @@
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
 
-from db import create_exercise, get_all_exercises, get_exercise_by_id
+from db import create_exercise, delete_exercise, get_all_exercises, get_exercise_by_id
 from db.models import ExerciseRequestBody, ExerciseResponseBody
 
 router = APIRouter()
@@ -72,5 +72,11 @@ async def update_exercise(id: int):
 
 
 @router.delete("/exercise/{id}", status_code=204)
-async def delete_exercise(id: int):
-    return {"message": f"Delete Exercise {id} Triggered"}
+async def remove_exercise(id: int):
+    row = await get_exercise_by_id(id)
+
+    if row is None:
+        raise HTTPException(status_code=404, detail="Exercise not found")
+
+    await delete_exercise(id)
+    return None

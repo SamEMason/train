@@ -13,3 +13,5 @@ SELECT_ALL_EXERCISES = "SELECT * FROM exercises;"
 
 SELECT_EXERCISE_BY_ID = """SELECT * FROM exercises
 WHERE id = ?"""
+
+DELETE_EXERCISE = "DELETE FROM exercises WHERE id = ?"
