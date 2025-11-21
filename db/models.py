@@ -9,6 +9,7 @@ class ExerciseRequestBody(BaseModel):
 
 
 class ExerciseResponseBody(BaseModel):
+    id: int
     name: str
     muscle_group: str
     category: str

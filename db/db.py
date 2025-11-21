@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import datetime
 
 from db.queries import (
     ADD_EXERCISE,
@@ -6,7 +7,7 @@ from db.queries import (
     SELECT_ALL_EXERCISES,
     SELECT_EXERCISE_BY_ID,
 )
-from db.models import ExerciseResponseBody
+from db.models import ExerciseRequestBody
 
 connection = sqlite3.connect("data.db")
 
@@ -16,17 +17,22 @@ def create_tables():
         connection.execute(CREATE_EXERCISE_TABLE)
 
 
-async def create_exercise(new_exercise: ExerciseResponseBody) -> None:
+async def create_exercise(
+    new_exercise: ExerciseRequestBody, created_at: datetime
+) -> int | None:
     with connection:
-        connection.execute(
+        cursor = connection.cursor()
+        cursor.execute(
             ADD_EXERCISE,
             (
                 new_exercise.name,
                 new_exercise.muscle_group,
                 new_exercise.category,
-                new_exercise.created_at,
+                created_at,
             ),
         )
+
+    return cursor.lastrowid
 
 
 async def get_all_exercises():
