@@ -2,13 +2,13 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class RequestExercise(BaseModel):
+class ExerciseRequestBody(BaseModel):
     name: str
     muscle_group: str
     category: str
 
 
-class ResponseExercise(BaseModel):
+class ExerciseResponseBody(BaseModel):
     name: str
     muscle_group: str
     category: str

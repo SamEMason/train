@@ -1,30 +1,47 @@
 from datetime import datetime
 from fastapi import APIRouter
 
-from db import create_exercise
-from db.models import RequestExercise, ResponseExercise
+from db import create_exercise, get_all_exercises, get_exercise_by_id
+from db.models import ExerciseRequestBody, ExerciseResponseBody
 
 router = APIRouter()
 
 
 @router.get("/exercise")
-async def get_exercises():
-    return {"message": "Get Exercises Triggered"}
+async def get_exercises() -> list[ExerciseResponseBody]:
+    rows = await get_all_exercises()
+
+    return [
+        ExerciseResponseBody(
+            name=row[1],
+            muscle_group=row[2],
+            category=row[3],
+            created_at=row[4],
+        )
+        for row in rows
+    ]
 
 
 @router.get("/exercise/{id}")
-async def get_exercise(id: int):
-    return {"message": f"Get Exercise {id} Triggered"}
+async def get_exercise(id: int) -> ExerciseResponseBody:
+    row = await get_exercise_by_id(id)
+
+    return ExerciseResponseBody(
+        name=row[1],
+        muscle_group=row[2],
+        category=row[3],
+        created_at=row[4],
+    )
 
 
 @router.post("/exercise")
-async def add_exercise(exercise: RequestExercise) -> ResponseExercise:
+async def add_exercise(exercise: ExerciseRequestBody) -> ExerciseResponseBody:
 
     # Get timestamp
     created_at = datetime.now()
 
     # Create full Exercise data model
-    response_exercise: ResponseExercise = ResponseExercise(
+    response_exercise: ExerciseResponseBody = ExerciseResponseBody(
         name=exercise.name,
         muscle_group=exercise.muscle_group,
         category=exercise.category,

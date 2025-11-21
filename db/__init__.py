@@ -1,3 +1,8 @@
-from db.db import create_exercise, create_tables
+from db.db import create_exercise, create_tables, get_all_exercises, get_exercise_by_id
 
-__all__ = ["create_exercise", "create_tables"]
+__all__ = [
+    "create_exercise",
+    "create_tables",
+    "get_all_exercises",
+    "get_exercise_by_id",
+]

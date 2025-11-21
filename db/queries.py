@@ -7,4 +7,9 @@ CREATE_EXERCISE_TABLE = """CREATE TABLE IF NOT EXISTS exercises (
 );"""
 
 
-ADD_EXERCISE = """INSERT INTO exercises (name, muscle_group, category, created_at) VALUES (?, ?, ?, ?)"""
+ADD_EXERCISE = """INSERT INTO exercises (name, muscle_group, category, created_at) VALUES (?, ?, ?, ?);"""
+
+SELECT_ALL_EXERCISES = "SELECT * FROM exercises;"
+
+SELECT_EXERCISE_BY_ID = """SELECT * FROM exercises
+WHERE id = ?"""
