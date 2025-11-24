@@ -29,7 +29,7 @@ async def get_exercise(id: int) -> ExerciseResponseBody:
 
     if row is None:
         # Row not found - return 404
-        raise HTTPException(status_code=404, detail="Exercise not found")
+        raise HTTPException(status_code=404, detail=f"Exercise with id: {id} not found")
 
     return ExerciseResponseBody(
         id=row[0],
@@ -76,7 +76,7 @@ async def remove_exercise(id: int):
     row = await get_exercise_by_id(id)
 
     if row is None:
-        raise HTTPException(status_code=404, detail="Exercise not found")
+        raise HTTPException(status_code=404, detail=f"Exercise with id: {id} not found")
 
     await delete_exercise(id)
     return None
