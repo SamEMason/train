@@ -4,6 +4,7 @@ from db.db import (
     delete_exercise,
     get_all_exercises,
     get_exercise_by_id,
+    modify_exercise,
 )
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "delete_exercise",
     "get_all_exercises",
     "get_exercise_by_id",
+    "modify_exercise",
 ]

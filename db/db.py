@@ -1,5 +1,6 @@
 import sqlite3
 from datetime import datetime
+from typing import Any
 
 from db.queries import (
     ADD_EXERCISE,
@@ -8,7 +9,7 @@ from db.queries import (
     SELECT_ALL_EXERCISES,
     SELECT_EXERCISE_BY_ID,
 )
-from db.models import ExerciseRequestBody
+from db.models import ExerciseRequestBody, ExerciseUpdate
 
 connection = sqlite3.connect("data.db")
 
@@ -49,6 +50,25 @@ async def get_exercise_by_id(id: int):
         cursor = connection.execute(SELECT_EXERCISE_BY_ID, (id,))
 
         return cursor.fetchone()
+
+
+async def modify_exercise(id: int, payload: ExerciseUpdate):
+    fields: list[str] = []
+    values: list[Any] = []
+
+    data = payload.model_dump(exclude_unset=True)
+
+    for key, value in data.items():
+        fields.append(f"{key} = ?")
+        values.append(value)
+
+    if len(values) == 0:
+        return
+
+    query = f"UPDATE exercises SET {", ".join(fields)} WHERE id = {id}"
+
+    with connection:
+        connection.execute(query, tuple(values))
 
 
 async def delete_exercise(id: int):

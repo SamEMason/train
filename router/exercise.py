@@ -1,8 +1,14 @@
 from datetime import datetime
 from fastapi import APIRouter, HTTPException
 
-from db import create_exercise, delete_exercise, get_all_exercises, get_exercise_by_id
-from db.models import ExerciseRequestBody, ExerciseResponseBody
+from db import (
+    create_exercise,
+    delete_exercise,
+    get_all_exercises,
+    get_exercise_by_id,
+    modify_exercise,
+)
+from db.models import ExerciseRequestBody, ExerciseResponseBody, ExerciseUpdate
 
 router = APIRouter()
 
@@ -67,8 +73,15 @@ async def add_exercise(exercise: ExerciseRequestBody) -> ExerciseResponseBody:
 
 
 @router.put("/exercise/{id}", status_code=200)
-async def update_exercise(id: int):
-    return {"message": f"Update Exercise {id} Triggered"}
+async def update_exercise(id: int, payload: ExerciseUpdate):
+    row = await get_exercise_by_id(id)
+
+    if row is None:
+        raise HTTPException(status_code=404, detail=f"Exercise with id: {id} not found")
+
+    # Modify exercise entry in DB
+    return await modify_exercise(id, payload)
+
 
 
 @router.delete("/exercise/{id}", status_code=204)
