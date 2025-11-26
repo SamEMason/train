@@ -76,7 +76,7 @@ async def modify_exercise(id: int, payload: ExerciseUpdate):
         return
 
     # Build query for execution
-    query = f"UPDATE exercises SET {", ".join(fields)} WHERE id = {id}"
+    query = f"UPDATE exercises SET {', '.join(fields)} WHERE id = {id}"
 
     # Execute update exercise query
     with connection:
