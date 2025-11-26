@@ -3,13 +3,13 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class ExerciseRequestBody(BaseModel):
+class ExerciseCreate(BaseModel):
     name: str
     muscle_group: str
     category: str
 
 
-class ExerciseResponseBody(BaseModel):
+class ExerciseRead(BaseModel):
     id: int
     name: str
     muscle_group: str

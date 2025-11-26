@@ -8,17 +8,17 @@ from db import (
     get_exercise_by_id,
     modify_exercise,
 )
-from db.models import ExerciseRequestBody, ExerciseResponseBody, ExerciseUpdate
+from db.models import ExerciseCreate, ExerciseRead, ExerciseUpdate
 
 router = APIRouter()
 
 
 @router.get("/exercise", status_code=200)
-async def get_exercises() -> list[ExerciseResponseBody]:
+async def get_exercises() -> list[ExerciseRead]:
     rows = await get_all_exercises()
 
     return [
-        ExerciseResponseBody(
+        ExerciseRead(
             id=row[0],
             name=row[1],
             muscle_group=row[2],
@@ -30,14 +30,14 @@ async def get_exercises() -> list[ExerciseResponseBody]:
 
 
 @router.get("/exercise/{id}", status_code=200)
-async def get_exercise(id: int) -> ExerciseResponseBody:
+async def get_exercise(id: int) -> ExerciseRead:
     row = await get_exercise_by_id(id)
 
     if row is None:
         # Row not found - return 404
         raise HTTPException(status_code=404, detail=f"Exercise with id: {id} not found")
 
-    return ExerciseResponseBody(
+    return ExerciseRead(
         id=row[0],
         name=row[1],
         muscle_group=row[2],
@@ -47,7 +47,7 @@ async def get_exercise(id: int) -> ExerciseResponseBody:
 
 
 @router.post("/exercise", status_code=201)
-async def add_exercise(exercise: ExerciseRequestBody) -> ExerciseResponseBody:
+async def add_exercise(exercise: ExerciseCreate) -> ExerciseRead:
 
     # Get timestamp
     created_at = datetime.now()
@@ -61,7 +61,7 @@ async def add_exercise(exercise: ExerciseRequestBody) -> ExerciseResponseBody:
         )
 
     # Create full Exercise data model
-    response_exercise = ExerciseResponseBody(
+    response_exercise = ExerciseRead(
         id=new_id,
         name=exercise.name,
         muscle_group=exercise.muscle_group,
@@ -81,7 +81,6 @@ async def update_exercise(id: int, payload: ExerciseUpdate):
 
     # Modify exercise entry in DB
     return await modify_exercise(id, payload)
-
 
 
 @router.delete("/exercise/{id}", status_code=204)

@@ -8,7 +8,7 @@ from db.queries import (
     SELECT_ALL_EXERCISES,
     SELECT_EXERCISE_BY_ID,
 )
-from db.models import ExerciseRequestBody, ExerciseUpdate
+from db.models import ExerciseCreate, ExerciseUpdate
 
 connection = sqlite3.connect("data.db")
 
@@ -20,7 +20,7 @@ def create_tables():
 
 
 async def create_exercise(
-    new_exercise: ExerciseRequestBody, created_at: datetime
+    new_exercise: ExerciseCreate, created_at: datetime
 ) -> int | None:
     # Execute add exercise query
     with connection:
